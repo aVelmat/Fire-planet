@@ -1,0 +1,22 @@
+# User-specific files
+.idea/
+.vscode/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# OSX
+.DS_Store
+
+# Linux
+.directory
+
+# Unity
+/Library/
+/Temp/
+/Obj/
+/Build/
+/Builds/
+/Logs/
+/UserSettings/
