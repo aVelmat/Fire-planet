@@ -61,7 +61,13 @@
     <Analyzer Include="E:\Programs\Unity hub editor\6000.0.37f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Game\Building\SupportBuilding.cs" />
+    <Compile Include="Assets\Scripts\Game\Unit\Unit.cs" />
+    <Compile Include="Assets\Scripts\Game\WorldGen.cs" />
+    <Compile Include="Assets\Scripts\Game\Render.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Game\Building\Building.cs" />
+    <Compile Include="Assets\Scripts\Game\Game.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

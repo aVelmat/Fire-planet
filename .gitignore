@@ -1,6 +1,7 @@
 # User-specific files
 .idea/
 .vscode/
+.vs/
 
 # Windows
 Thumbs.db
