@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController
 {
-    private List<Player> player;
+    private List<Player> players;
+    private int currTurn = 0;
+
     public PlayerController(int playersCount)
     {
         if(playersCount > GameConfig.MAX_PLAYERS)
@@ -12,14 +14,17 @@ public class PlayerController
 
         PlayersCount = playersCount;
 
-        player = new List<Player>();
+        players = new List<Player>();
         for (int i = 0; i < playersCount; i++)
         {
-            player.Add(new Player(((Player.TeamColor)i));
+            players.Add(new Player(((Player.TeamColor)i)));
         }
     }
 
     public void DistributeVillages(List<Village> villages) {
+
+        if(villages.Count < players.Count)
+            throw new System.ArgumentException("villages", "Can't distribute villages! Villages count can't be less than players count");
 
         // Shuffle the villages
         for (int i = villages.Count - 1; i > 0; i--)
@@ -28,9 +33,9 @@ public class PlayerController
             (villages[i], villages[j]) = (villages[j], villages[i]); 
         }
 
-        foreach (Player player in player)
+        for (int i = 0; i < players.Count;i++)
         {
-            player.Villages = new List<Village>();
+            players[i].CaptureSettlement(villages[i]);
         }
     }
 
