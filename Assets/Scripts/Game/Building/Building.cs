@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 
-public class Building
+public class Building : GameObjectBase
 {
-    
+    public Building(Vector2Int pos) : base(pos)
+    {}
 }

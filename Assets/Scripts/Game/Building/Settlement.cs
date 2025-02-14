@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class Settlement : Building
 {
-    internal void SetOwner(Player player)
+    public Settlement(Vector2Int newPos) : base(newPos)
+    {
+    }
+
+    public void SetOwner(Player player)
     {
         throw new NotImplementedException();
     }
