@@ -8,6 +8,7 @@ public class WorldGen
 {
     internal static void GenerateWorld(TerrainType[,] terrainMap, Building[,] buildingsMap, WorldType worldType)
     {
+        // Generate terrain tiles
         for (int x = 0; x < terrainMap.GetLength(0); x++)
         {
             for (int y = 0; y < terrainMap.GetLength(1); y++)
@@ -19,18 +20,24 @@ public class WorldGen
             }
         }
 
+        // Generate villages
         List<Village> villages = new List<Village>();
 
         int villagesCount = CalcVillagesCount(terrainMap.GetLength(0) * terrainMap.GetLength(1));
 
         for (int i = 0; i < villagesCount; i++)
         {
-            Vector2Int newPos = new Vector2Int(Random.Range(0, terrainMap.GetLength(0)), Random.Range(0, terrainMap.GetLength(1)));
-
-            while (!IsVillagePlaceable(terrainMap, villages, newPos))
+            for (int j = 0;j < 100;j++)
             {
-                newPos = new Vector2Int(Random.Range(0, terrainMap.GetLength(0)), Random.Range(0, terrainMap.GetLength(1)));
-                villages.Add(new Village(newPos));
+                Vector2Int newPos = new Vector2Int(Random.Range(0, terrainMap.GetLength(0)), Random.Range(0, terrainMap.GetLength(1)));
+
+                if(IsVillagePlaceable(terrainMap, villages, newPos))
+                {
+                    Village village = new Village(newPos);
+                    villages.Add(village);
+                    buildingsMap[newPos.x, newPos.y] = village;
+                    break;
+                }
             }
         }
     }
@@ -42,7 +49,7 @@ public class WorldGen
     /// <returns></returns>
     private static int CalcVillagesCount(float area)
     {
-        return (int)(area / 16f);
+        return (int)(area / 32f);
     }
 
     private static bool IsVillagePlaceable(TerrainType[,] terrainMap,List<Village> villages, Vector2Int pos)

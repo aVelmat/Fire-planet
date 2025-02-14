@@ -10,7 +10,7 @@ public class PlayerController
     public PlayerController(int playersCount)
     {
         if(playersCount > GameConfig.MAX_PLAYERS)
-            throw new System.ArgumentException("playersCount", "playersCount can't be greater than " + GameConfig.MAX_PLAYERS);
+            throw new System.ArgumentException($"playersCount can't be greater than {GameConfig.MAX_PLAYERS}");
 
         PlayersCount = playersCount;
 
@@ -24,7 +24,7 @@ public class PlayerController
     public void DistributeVillages(List<Village> villages) {
 
         if(villages.Count < players.Count)
-            throw new System.ArgumentException("villages", "Can't distribute villages! Villages count can't be less than players count");
+            throw new System.ArgumentException($"Can't distribute villages! Villages count can't be less than players count. villages -> {villages.Count}. players -> {players.Count}");
 
         // Shuffle the villages
         for (int i = villages.Count - 1; i > 0; i--)

@@ -10,6 +10,8 @@ public class Render : MonoBehaviour
     [SerializeField]
     private Vector2 mapScale;
 
+    private readonly Vector3 TILES_OFFSET = new Vector3(0.5f,0, 0.5f);
+
     public void InitWorld(Game.TerrainType[,] terrainMap) {
 
         GameObject ground = Instantiate(groundPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -23,7 +25,7 @@ public class Render : MonoBehaviour
                 switch (terrainMap[x, y])
                 {
                     case Game.TerrainType.mountain:
-                        Instantiate(mountainPrefab, new Vector3(x * mapScale.x, 0, y * mapScale.y), Quaternion.identity);
+                        Instantiate(mountainPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
                         break;
                     default:
                         break;
