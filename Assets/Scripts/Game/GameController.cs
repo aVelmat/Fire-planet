@@ -6,13 +6,14 @@ public class GameController : MonoBehaviour
     public Vector2Int mapSize;
 
     private Render render;
+    private Game game;
 
     public void Start()
     {
-        Game game = new Game(mapSize,2,1);
+        game = new Game(mapSize,2,1);
 
         render = GetComponent<Render>();
-        render.InitWorld(game.GetTerrain());
+        render.InitWorld(game.GetTerrain(), game.GetBuildings(), game.GetUnits());
         //render.SetWorldState(game.GetBuildings(), game.GetUnits());
     }
 }

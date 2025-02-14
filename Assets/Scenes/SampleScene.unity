@@ -473,6 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundPrefab: {fileID: 5127949381769630406, guid: 742d9d5f1ae71b94ba24ca905ebb673d, type: 3}
   mountainPrefab: {fileID: 327769673436621900, guid: 0bd3a27613d91924180d01f13572818c, type: 3}
+  villagePrefab: {fileID: 655115217135572579, guid: 5842a170cc93732489e660b3a3efd840, type: 3}
   mapScale: {x: 1, y: 1}
 --- !u!114 &1067033143
 MonoBehaviour:

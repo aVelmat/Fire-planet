@@ -48,6 +48,8 @@ public class Game {
         PC.DistributeVillages(villages);
     }
 
+    #region Getters
+
     internal Building[,] GetBuildings()
     {
         return buildingsMap;
@@ -62,6 +64,8 @@ public class Game {
     {
         return unitsMap;
     }
+
+    #endregion
 
     public enum TerrainType
     {
