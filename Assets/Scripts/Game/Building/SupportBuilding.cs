@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SupportBuilding
+public class SupportBuilding : Building
 {
     
 }
