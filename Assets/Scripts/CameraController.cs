@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Class responsible for camera movement and tile click detection
+/// </summary>
 public class CameraController : MonoBehaviour
 {
     public delegate void OnTileClickedHandler(Vector2Int pos);
@@ -31,7 +34,7 @@ public class CameraController : MonoBehaviour
 
     private void CheckMouseClick()
     {
-        if (Input.GetMouseButtonDown(0)) // À Ã
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -40,7 +43,7 @@ public class CameraController : MonoBehaviour
             {
                 Vector3 hitPoint = hit.point;
 
-                TileClicked?.Invoke(new Vector2Int((int)(hitPoint.x - 0.5f), (int)(hitPoint.z - 0.5f)));
+                TileClicked?.Invoke(new Vector2Int((int)(hitPoint.x), (int)(hitPoint.z)));
             }
         }
     }

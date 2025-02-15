@@ -64,6 +64,20 @@ public class Game {
     {
         return unitsMap;
     }
+    internal List<Vector2Int> GetUnitPossibleMovePoints(Vector2Int pos)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal Unit GetUnit(Vector2Int pos)
+    {
+        return unitsMap[pos.x, pos.y];
+    }
+
+    internal TerrainType GetTerrainElem(Vector2Int pos)
+    {
+        return terrainMap[pos.x, pos.y];
+    }
 
     #endregion
 

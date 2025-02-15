@@ -61,6 +61,7 @@
     <Analyzer Include="E:\Programs\Unity hub editor\6000.0.37f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Game\SelectionTool.cs" />
     <Compile Include="Assets\Scripts\Game\Building\SupportBuilding.cs" />
     <Compile Include="Assets\Scripts\Game\GameConfig.cs" />
     <Compile Include="Assets\Scripts\Game\Building\Village.cs" />
@@ -72,8 +73,10 @@
     <Compile Include="Assets\Scripts\Game\GameController.cs" />
     <Compile Include="Assets\Scripts\Game\Building\Settlement.cs" />
     <Compile Include="Assets\Scripts\Game\Players\Player.cs" />
+    <Compile Include="Assets\Scripts\Utils\MathUtils.cs" />
     <Compile Include="Assets\Scripts\Game\GameObjectBase.cs" />
     <Compile Include="Assets\Scripts\Game\Players\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Game\Game.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1199,6 +1202,10 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.State">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">

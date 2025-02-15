@@ -10,6 +10,9 @@ public class Render : MonoBehaviour
     public GameObject groundPrefab;
     public GameObject mountainPrefab;
     public GameObject villagePrefab;
+    [Header("Selection Sprites")]
+    public GameObject selectUnitSprite;
+    public GameObject selectTileSprite;
 
     [SerializeField]
     private Vector2 mapScale;
@@ -86,5 +89,23 @@ public class Render : MonoBehaviour
     public Vector2 GetMapScale()
     {
         return mapScale;
+    }
+
+    internal void ClearSelection()
+    {
+        selectUnitSprite.SetActive(false);
+        selectTileSprite.SetActive(false);
+    }
+
+    internal void ShowUnitSelection(Vector2Int vector2Int, float selectSpriteYoffset)
+    {
+        selectUnitSprite.SetActive(true);
+        selectUnitSprite.transform.position = new Vector3(vector2Int.x * mapScale.x + TILES_OFFSET.x, selectSpriteYoffset + 0.505f, vector2Int.y * mapScale.y + TILES_OFFSET.z);
+    }
+
+    internal void ShowTileSelection(Vector2Int vector2Int, float selectSpriteYoffset)
+    {
+        selectTileSprite.SetActive(true);
+        selectTileSprite.transform.position = new Vector3(vector2Int.x * mapScale.x + TILES_OFFSET.x, selectSpriteYoffset + 0.505f, vector2Int.y * mapScale.y + TILES_OFFSET.z);
     }
 }
