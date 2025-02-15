@@ -82,4 +82,9 @@ public class Render : MonoBehaviour
     {
         throw new NotImplementedException();
     }
+
+    public Vector2 GetMapScale()
+    {
+        return mapScale;
+    }
 }
