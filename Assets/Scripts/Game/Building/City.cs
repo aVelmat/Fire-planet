@@ -1,10 +1,9 @@
-using System;
 using UnityEngine;
 
-public class Settlement : Building
+public class City : Building
 {
     public Player Owner { get; private set; }
-    public Settlement(Vector2Int newPos) : base(newPos)
+    public City(Vector2Int newPos) : base(newPos)
     {
     }
 

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Village : Settlement
+public class Village : Building
 {
     private Vector2Int newPos;
 

@@ -6,10 +6,13 @@ public class PlayerController
 {
     private List<Player> players;
     private int currTurn = 0;
+    
+    public delegate void CaputeSettlement(Player player,Vector2Int pos);
+    private CaputeSettlement caputeSettlement_del;
 
-    public PlayerController(int playersCount)
+    public PlayerController(int playersCount, CaputeSettlement caputeSettlement_del)
     {
-        if(playersCount > GameConfig.MAX_PLAYERS)
+        if (playersCount > GameConfig.MAX_PLAYERS)
             throw new System.ArgumentException($"playersCount can't be greater than {GameConfig.MAX_PLAYERS}");
 
         PlayersCount = playersCount;
@@ -19,6 +22,8 @@ public class PlayerController
         {
             players.Add(new Player(((Player.TeamColor)i)));
         }
+
+        this.caputeSettlement_del = caputeSettlement_del;
     }
 
     public void DistributeVillages(List<Village> villages) {
@@ -35,7 +40,7 @@ public class PlayerController
 
         for (int i = 0; i < players.Count;i++)
         {
-            players[i].CaptureSettlement(villages[i]);
+            caputeSettlement_del?.Invoke(players[i], villages[i].GetPosition());
         }
     }
 

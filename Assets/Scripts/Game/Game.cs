@@ -16,11 +16,17 @@ public class Game {
         terrainMap = new TerrainType[mapSize.x, mapSize.y];
         buildingsMap = new Building[mapSize.x, mapSize.y];
         unitsMap = new Unit[mapSize.x, mapSize.y];
-        PC = new PlayerController(playersCount);
+        PC = new PlayerController(playersCount, CaputeSettlement);
 
         UnityEngine.Random.InitState(seed);
         WorldGen.GenerateWorld(terrainMap, buildingsMap,WorldGen.WorldType.defaultWorld);
         SetFreeSettlementsForPlayers();
+        AddStartUnits();
+    }
+
+    private void AddStartUnits()
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -46,6 +52,26 @@ public class Game {
         List<Village> villages = findVillages();
 
         PC.DistributeVillages(villages);
+    }
+
+    public void CaputeSettlement(Player player, Vector2Int pos)
+    {
+        if(buildingsMap[pos.x, pos.y] is Village)
+        {
+            City city = new City(pos);
+            city.SetOwner(player);
+            buildingsMap[pos.x, pos.y] = city;
+        }
+        else
+        {
+            City city = (City)buildingsMap[pos.x, pos.y];
+            city.SetOwner(player);
+        }
+    }
+
+    public void SpawnUnit(Unit unit)
+    {
+
     }
 
     #region Getters

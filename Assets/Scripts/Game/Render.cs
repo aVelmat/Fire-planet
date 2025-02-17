@@ -10,6 +10,8 @@ public class Render : MonoBehaviour
     public GameObject groundPrefab;
     public GameObject mountainPrefab;
     public GameObject villagePrefab;
+    public GameObject cityPrefab;
+    public GameObject riflemanPrefab;
     [Header("Selection Sprites")]
     public GameObject selectUnitSprite;
     public GameObject selectTileSprite;
@@ -19,8 +21,9 @@ public class Render : MonoBehaviour
 
     private readonly Vector3 TILES_OFFSET = new Vector3(0.5f,0, 0.5f);
 
-    private List<GameObject> terrainTiles = new List<GameObject>();
-    private List<GameObject> buildings = new List<GameObject>();
+    private GameObject[,] terrainMap;
+    private GameObject[,] buildingsMap;
+    private GameObject[,] unitsMap;
 
     public void InitWorld(Game.TerrainType[,] terrainMap, Building[,] buildings, Unit[,] units) {
 
@@ -30,6 +33,8 @@ public class Render : MonoBehaviour
     }
 
     private void BuildTerrain(Game.TerrainType[,] terrainMap) {
+
+        this.terrainMap = new GameObject[terrainMap.GetLength(0),terrainMap.GetLength(1)];
 
         GameObject ground = Instantiate(groundPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         ground.transform.position = new Vector3(terrainMap.GetLength(0) * mapScale.x / 2, 0, terrainMap.GetLength(1) * mapScale.y / 2);
@@ -42,7 +47,7 @@ public class Render : MonoBehaviour
                 switch (terrainMap[x, y])
                 {
                     case Game.TerrainType.mountain:
-                        terrainTiles.Add(Instantiate(mountainPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
+                        this.terrainMap[x,y] = Instantiate(mountainPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
                         break;
                     default:
                         break;
@@ -53,6 +58,8 @@ public class Render : MonoBehaviour
 
     private void BuildBuildings(Building[,] buildingsMap)
     {
+        this.buildingsMap = new GameObject[buildingsMap.GetLength(0),buildingsMap.GetLength(1)];
+
         for (int x = 0; x < buildingsMap.GetLength(0); x++)
         {
             for (int y = 0; y < buildingsMap.GetLength(1); y++)
@@ -60,7 +67,12 @@ public class Render : MonoBehaviour
                 Building building = buildingsMap[x, y];
                 if (building is Village)
                 {
-                    buildings.Add(Instantiate(villagePrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
+                    this.buildingsMap[x, y] = Instantiate(villagePrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
+                }
+
+                if(building is City)
+                {
+                    this.buildingsMap[x, y] = Instantiate(cityPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
                 }
             }
         }
@@ -68,15 +80,16 @@ public class Render : MonoBehaviour
 
     private void BuildUnits(Unit[,] units)
     {
+        this.unitsMap = new GameObject[units.GetLength(0), units.GetLength(1)];
         for (int x = 0; x < units.GetLength(0); x++)
         {
             for (int y = 0; y < units.GetLength(1); y++)
             {
                 Unit unit = units[x, y];
-                //if (building is Village)
-                //{
-                //    Instantiate(villagePrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
-                //}
+                if(unit is Rifleman)
+                {
+                    this.unitsMap[x, y] = Instantiate(riflemanPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
+                }
             }
         }
     }

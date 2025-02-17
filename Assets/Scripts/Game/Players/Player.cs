@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class Player
 {
-    private List<Settlement> settlements = new List<Settlement>();
+    private List<City> cities = new List<City>();
 
     public TeamColor Team { get; private set; }
 
     public Player(TeamColor team)
     {
         Team = team;
-    }
-
-    public void CaptureSettlement(Settlement settlement)
-    {
-        settlement.SetOwner(this);
-        settlements.Add(settlement);
     }
 
     public enum TeamColor

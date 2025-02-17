@@ -61,6 +61,7 @@
     <Analyzer Include="E:\Programs\Unity hub editor\6000.0.37f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Game\Building\City.cs" />
     <Compile Include="Assets\Scripts\Game\SelectionTool.cs" />
     <Compile Include="Assets\Scripts\Game\Building\SupportBuilding.cs" />
     <Compile Include="Assets\Scripts\Game\GameConfig.cs" />
@@ -68,12 +69,12 @@
     <Compile Include="Assets\Scripts\Game\Unit\Unit.cs" />
     <Compile Include="Assets\Scripts\Game\WorldGen.cs" />
     <Compile Include="Assets\Scripts\Game\Render.cs" />
+    <Compile Include="Assets\Scripts\Game\Unit\Rifleman.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Game\Building\Building.cs" />
     <Compile Include="Assets\Scripts\Game\GameController.cs" />
-    <Compile Include="Assets\Scripts\Game\Building\Settlement.cs" />
-    <Compile Include="Assets\Scripts\Game\Players\Player.cs" />
     <Compile Include="Assets\Scripts\Utils\MathUtils.cs" />
+    <Compile Include="Assets\Scripts\Game\Players\Player.cs" />
     <Compile Include="Assets\Scripts\Game\GameObjectBase.cs" />
     <Compile Include="Assets\Scripts\Game\Players\PlayerController.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
