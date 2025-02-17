@@ -10,5 +10,6 @@ public class City : Building
     public void SetOwner(Player player)
     {
         Owner = player;
+        player.AddCity(this);
     }
 }

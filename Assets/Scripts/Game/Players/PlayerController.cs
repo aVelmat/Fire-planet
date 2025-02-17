@@ -8,9 +8,12 @@ public class PlayerController
     private int currTurn = 0;
     
     public delegate void CaputeSettlement(Player player,Vector2Int pos);
-    private CaputeSettlement caputeSettlement_del;
+    public delegate void SpawnUnit(Unit unit);
 
-    public PlayerController(int playersCount, CaputeSettlement caputeSettlement_del)
+    private CaputeSettlement caputeSettlement_del;
+    private SpawnUnit spawnUnit_del;
+
+    public PlayerController(int playersCount, CaputeSettlement caputeSettlement_del, SpawnUnit spawnUnit_del)
     {
         if (playersCount > GameConfig.MAX_PLAYERS)
             throw new System.ArgumentException($"playersCount can't be greater than {GameConfig.MAX_PLAYERS}");
@@ -24,8 +27,14 @@ public class PlayerController
         }
 
         this.caputeSettlement_del = caputeSettlement_del;
+        this.spawnUnit_del = spawnUnit_del;
     }
 
+    /// <summary>
+    /// Distributes villages among players one by one
+    /// </summary>
+    /// <param name="villages"></param>
+    /// <exception cref="System.ArgumentException"></exception>
     public void DistributeVillages(List<Village> villages) {
 
         if(villages.Count < players.Count)
@@ -42,6 +51,20 @@ public class PlayerController
         {
             caputeSettlement_del?.Invoke(players[i], villages[i].GetPosition());
         }
+    }
+
+    /// <summary>
+    /// Distributes start unti/units among players on game beginnig
+    /// </summary>
+    public void DistributeStartUnits() {
+
+        foreach (Player player in players)
+        {
+            Vector2Int pos = player.GetCity(0).GetPosition();
+
+            spawnUnit_del?.Invoke(new Rifleman(pos, player));
+        }
+
     }
 
     public int PlayersCount { get; }

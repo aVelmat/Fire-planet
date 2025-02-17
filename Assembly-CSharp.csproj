@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Game\SelectionTool.cs" />
     <Compile Include="Assets\Scripts\Game\Building\SupportBuilding.cs" />
     <Compile Include="Assets\Scripts\Game\GameConfig.cs" />
+    <Compile Include="Assets\Scripts\Game\Map.cs" />
     <Compile Include="Assets\Scripts\Game\Building\Village.cs" />
     <Compile Include="Assets\Scripts\Game\Unit\Unit.cs" />
     <Compile Include="Assets\Scripts\Game\WorldGen.cs" />

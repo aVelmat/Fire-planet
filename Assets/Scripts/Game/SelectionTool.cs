@@ -1,8 +1,10 @@
 ﻿
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Class is responsible for handling and rendering the selection of objects in the game.
+/// Class is responsible for handling and rendering the selection of objects/unit moving points in the game. 
 /// </summary>
 public class SelectionTool
 {
@@ -19,10 +21,12 @@ public class SelectionTool
     /// Selects a tile with unit and renders the selection.
     /// </summary>
     /// <param name="unit"></param>
-    public void SelectUnit(Vector2Int pos, float selectSpriteYoffset) {
+    public void SelectUnit(Vector2Int pos,List<Vector2Int> movePoints, float selectSpriteYoffset) {
 
         render.ClearSelection();
+        render.ClearUnitMovePos();
         render.ShowUnitSelection(pos, selectSpriteYoffset);
+        render.CreateUnitMovePoints();
         selectionType = SelectionType.Unit;
         this.selectedTilePosition = pos;
     }

@@ -19,35 +19,35 @@ public class Render : MonoBehaviour
     [SerializeField]
     private Vector2 mapScale;
 
-    private readonly Vector3 TILES_OFFSET = new Vector3(0.5f,0, 0.5f);
+    private readonly Vector3 TILES_OFFSET = new Vector3(0.5f, 0, 0.5f);
 
-    private GameObject[,] terrainMap;
-    private GameObject[,] buildingsMap;
-    private GameObject[,] unitsMap;
+    private Map<GameObject> terrainMap;
+    private Map<GameObject> buildingsMap;
+    private Map<GameObject> unitsMap;
 
-    public void InitWorld(Game.TerrainType[,] terrainMap, Building[,] buildings, Unit[,] units) {
-
+    public void InitWorld(Map<Game.TerrainType> terrainMap, Map<Building>  buildings, Map<Unit> units)
+    {
         BuildTerrain(terrainMap);
         BuildBuildings(buildings);
         BuildUnits(units);
     }
 
-    private void BuildTerrain(Game.TerrainType[,] terrainMap) {
-
-        this.terrainMap = new GameObject[terrainMap.GetLength(0),terrainMap.GetLength(1)];
+    private void BuildTerrain(Map<Game.TerrainType> terrainMap)
+    {
+        this.terrainMap = new Map<GameObject>(new Vector2Int(terrainMap.GetSize(0), terrainMap.GetSize(1)));
 
         GameObject ground = Instantiate(groundPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        ground.transform.position = new Vector3(terrainMap.GetLength(0) * mapScale.x / 2, 0, terrainMap.GetLength(1) * mapScale.y / 2);
-        ground.transform.localScale = new Vector3(terrainMap.GetLength(0) * mapScale.x, 1, terrainMap.GetLength(1) * mapScale.y);
+        ground.transform.position = new Vector3(terrainMap.GetSize(0) * mapScale.x / 2, 0, terrainMap.GetSize(1) * mapScale.y / 2);
+        ground.transform.localScale = new Vector3(terrainMap.GetSize(0) * mapScale.x, 1, terrainMap.GetSize(1) * mapScale.y);
 
-        for (int x = 0; x < terrainMap.GetLength(0); x++)
+        for (int x = 0; x < terrainMap.GetSize(0); x++)
         {
-            for (int y = 0; y < terrainMap.GetLength(1); y++)
+            for (int y = 0; y < terrainMap.GetSize(1); y++)
             {
-                switch (terrainMap[x, y])
+                switch (terrainMap.Get(x,y))
                 {
                     case Game.TerrainType.mountain:
-                        this.terrainMap[x,y] = Instantiate(mountainPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
+                        this.terrainMap.Set(x, y, Instantiate(mountainPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
                         break;
                     default:
                         break;
@@ -56,39 +56,39 @@ public class Render : MonoBehaviour
         }
     }
 
-    private void BuildBuildings(Building[,] buildingsMap)
+    private void BuildBuildings(Map<Building> buildingsMap)
     {
-        this.buildingsMap = new GameObject[buildingsMap.GetLength(0),buildingsMap.GetLength(1)];
+        this.buildingsMap = new Map<GameObject>(new Vector2Int(buildingsMap.GetSize(0), buildingsMap.GetSize(1)));
 
-        for (int x = 0; x < buildingsMap.GetLength(0); x++)
+        for (int x = 0; x < buildingsMap.GetSize(0); x++)
         {
-            for (int y = 0; y < buildingsMap.GetLength(1); y++)
+            for (int y = 0; y < buildingsMap.GetSize(1); y++)
             {
-                Building building = buildingsMap[x, y];
+                Building building = buildingsMap.Get(x,y);
                 if (building is Village)
                 {
-                    this.buildingsMap[x, y] = Instantiate(villagePrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
+                    this.buildingsMap.Set(x, y, Instantiate(villagePrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
                 }
 
-                if(building is City)
+                if (building is City)
                 {
-                    this.buildingsMap[x, y] = Instantiate(cityPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
+                    this.buildingsMap.Set(x, y, Instantiate(cityPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
                 }
             }
         }
     }
 
-    private void BuildUnits(Unit[,] units)
+    private void BuildUnits(Map<Unit> units)
     {
-        this.unitsMap = new GameObject[units.GetLength(0), units.GetLength(1)];
-        for (int x = 0; x < units.GetLength(0); x++)
+        this.unitsMap = new Map<GameObject>(new Vector2Int(units.GetSize(0), units.GetSize(1)));
+        for (int x = 0; x < units.GetSize(0); x++)
         {
-            for (int y = 0; y < units.GetLength(1); y++)
+            for (int y = 0; y < units.GetSize(1); y++)
             {
-                Unit unit = units[x, y];
-                if(unit is Rifleman)
+                Unit unit = units.Get(x, y);
+                if (unit is Rifleman)
                 {
-                    this.unitsMap[x, y] = Instantiate(riflemanPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity);
+                    this.unitsMap.Set(x, y, Instantiate(riflemanPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
                 }
             }
         }
@@ -104,21 +104,25 @@ public class Render : MonoBehaviour
         return mapScale;
     }
 
-    internal void ClearSelection()
+    #region Selection
+
+    public void ClearSelection()
     {
         selectUnitSprite.SetActive(false);
         selectTileSprite.SetActive(false);
     }
 
-    internal void ShowUnitSelection(Vector2Int vector2Int, float selectSpriteYoffset)
+    public void ShowUnitSelection(Vector2Int vector2Int, float selectSpriteYoffset)
     {
         selectUnitSprite.SetActive(true);
         selectUnitSprite.transform.position = new Vector3(vector2Int.x * mapScale.x + TILES_OFFSET.x, selectSpriteYoffset + 0.505f, vector2Int.y * mapScale.y + TILES_OFFSET.z);
     }
 
-    internal void ShowTileSelection(Vector2Int vector2Int, float selectSpriteYoffset)
+    public void ShowTileSelection(Vector2Int vector2Int, float selectSpriteYoffset)
     {
         selectTileSprite.SetActive(true);
         selectTileSprite.transform.position = new Vector3(vector2Int.x * mapScale.x + TILES_OFFSET.x, selectSpriteYoffset + 0.505f, vector2Int.y * mapScale.y + TILES_OFFSET.z);
     }
+
+    #endregion
 }

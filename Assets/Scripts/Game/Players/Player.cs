@@ -13,6 +13,9 @@ public class Player
         Team = team;
     }
 
+    public City GetCity(int num) { return cities[num]; }
+    public void AddCity(City city) { cities.Add(city); }
+
     public enum TeamColor
     {
         Red,

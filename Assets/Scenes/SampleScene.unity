@@ -488,6 +488,7 @@ MonoBehaviour:
   mountainPrefab: {fileID: 327769673436621900, guid: 0bd3a27613d91924180d01f13572818c, type: 3}
   villagePrefab: {fileID: 655115217135572579, guid: 5842a170cc93732489e660b3a3efd840, type: 3}
   cityPrefab: {fileID: 3197748731558572160, guid: fb218620beb4ed64b85dea860f8073a5, type: 3}
+  riflemanPrefab: {fileID: 1179412273995719900, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
   selectUnitSprite: {fileID: 1788678674}
   selectTileSprite: {fileID: 1671373478}
   mapScale: {x: 1, y: 1}
@@ -744,63 +745,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f3a4bbf9d286d64dba502a92afef0ff, type: 3}
---- !u!1001 &4224146178751766633
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1179412273995719900, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_Name
-      value: Rifleman
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.4852021
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 3.5064645
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2371274411895642143, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -812,4 +756,3 @@ SceneRoots:
   - {fileID: 1504839046}
   - {fileID: 2532965101741611152}
   - {fileID: 1101843188186352421}
-  - {fileID: 4224146178751766633}
