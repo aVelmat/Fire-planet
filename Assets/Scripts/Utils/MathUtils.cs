@@ -14,4 +14,9 @@ public class MathUtils
         }
         return false;
     }
+
+    public static bool IsPosInRange(Vector2Int pos, Vector2Int min,Vector2Int max)
+    {
+        return pos.x >= min.x && pos.y >= min.y && pos.x <= max.x && pos.y <= max.y;
+    }
 }

@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     private Render render;
     private Game game;
     private SelectionTool SelTool;
+
+    private List<IAction> actions = new List<IAction>();
     public void Start()
     {
         game = new Game(mapSize,2,1);
@@ -31,27 +33,32 @@ public class GameController : MonoBehaviour
     {
         if (pos != SelTool.selectedTilePosition)
         {
-            if(SelTool.selectionType == SelectionTool.SelectionType.Unit) { 
+            if(SelTool.selectionType == SelectionTool.SelectionType.Unit && game.IsUnitActive(SelTool.selectedTilePosition)) {
 
                 List<Vector2Int> movePoints = game.GetUnitPossibleMovePoints(SelTool.selectedTilePosition);
-                if(movePoints != null && MathUtils.IsListContainsVec2Int(movePoints, pos))
+                if (movePoints != null && MathUtils.IsListContainsVec2Int(movePoints, pos))
                 {
                     // Unit move
+                    game.MoveUnit(SelTool.selectedTilePosition, pos);
+                    AddAndRunAction(new MoveUnit(SelTool.selectedTilePosition, pos,true));
 
                     SelTool.ClearSelection();
-                }
-                else
-                {
-                    SelTool.Select(pos);
+                    return;
                 }
             }
-            else
-                SelTool.Select(pos);
+
+            SelTool.Select(pos);
         }
         else
         {
             SelTool.IncreaseSelectLevel();
         }
+    }
+
+    private void AddAndRunAction(IAction action) {
+
+        actions.Add(action);
+        render.RunAction(action);
     }
 
     private bool IsUnitExsist(Vector2Int pos,out List<Vector2Int> movePoints) {

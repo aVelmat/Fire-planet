@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Unit : GameObjectBase
@@ -7,5 +8,10 @@ public class Unit : GameObjectBase
     public Unit(Vector2Int pos, Player owner) : base(pos)
     {
         Owner = owner;
+    }
+
+    public void OnMove()
+    {
+        isCanMoveInTurn = false;
     }
 }

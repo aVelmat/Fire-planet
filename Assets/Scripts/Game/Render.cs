@@ -22,9 +22,7 @@ public class Render : MonoBehaviour
 
     private readonly Vector3 TILES_OFFSET = new Vector3(0.5f, 0, 0.5f);
 
-    private Map<GameObject> terrainMap;
-    private Map<GameObject> buildingsMap;
-    private Map<GameObject> unitsMap;
+    private Map map;
 
     private List<GameObject> unitMovePoints = new List<GameObject>();
 
@@ -37,7 +35,7 @@ public class Render : MonoBehaviour
 
     private void BuildTerrain(Map<Game.TerrainType> terrainMap)
     {
-        this.terrainMap = new Map<GameObject>(new Vector2Int(terrainMap.GetSize(0), terrainMap.GetSize(1)));
+        map.terrainMap = new Map<GameObject>(new Vector2Int(terrainMap.GetSize(0), terrainMap.GetSize(1)));
 
         GameObject ground = Instantiate(groundPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         ground.transform.position = new Vector3(terrainMap.GetSize(0) * mapScale.x / 2, 0, terrainMap.GetSize(1) * mapScale.y / 2);
@@ -50,7 +48,7 @@ public class Render : MonoBehaviour
                 switch (terrainMap.Get(x,y))
                 {
                     case Game.TerrainType.mountain:
-                        this.terrainMap.Set(x, y, Instantiate(mountainPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
+                        map.terrainMap.Set(x, y, Instantiate(mountainPrefab, LocalPosToGlobal(x, y), Quaternion.identity));
                         break;
                     default:
                         break;
@@ -61,7 +59,7 @@ public class Render : MonoBehaviour
 
     private void BuildBuildings(Map<Building> buildingsMap)
     {
-        this.buildingsMap = new Map<GameObject>(new Vector2Int(buildingsMap.GetSize(0), buildingsMap.GetSize(1)));
+        map.buildingsMap = new Map<GameObject>(new Vector2Int(buildingsMap.GetSize(0), buildingsMap.GetSize(1)));
 
         for (int x = 0; x < buildingsMap.GetSize(0); x++)
         {
@@ -70,12 +68,12 @@ public class Render : MonoBehaviour
                 Building building = buildingsMap.Get(x,y);
                 if (building is Village)
                 {
-                    this.buildingsMap.Set(x, y, Instantiate(villagePrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
+                    map.buildingsMap.Set(x, y, Instantiate(villagePrefab, LocalPosToGlobal(x, y), Quaternion.identity));
                 }
 
                 if (building is City)
                 {
-                    this.buildingsMap.Set(x, y, Instantiate(cityPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
+                    map.buildingsMap.Set(x, y, Instantiate(cityPrefab, LocalPosToGlobal(x, y), Quaternion.identity));
                 }
             }
         }
@@ -83,7 +81,7 @@ public class Render : MonoBehaviour
 
     private void BuildUnits(Map<Unit> units)
     {
-        this.unitsMap = new Map<GameObject>(new Vector2Int(units.GetSize(0), units.GetSize(1)));
+        map.unitsMap = new Map<GameObject>(new Vector2Int(units.GetSize(0), units.GetSize(1)));
         for (int x = 0; x < units.GetSize(0); x++)
         {
             for (int y = 0; y < units.GetSize(1); y++)
@@ -91,15 +89,30 @@ public class Render : MonoBehaviour
                 Unit unit = units.Get(x, y);
                 if (unit is Rifleman)
                 {
-                    this.unitsMap.Set(x, y, Instantiate(riflemanPrefab, new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z), Quaternion.identity));
+                    map.unitsMap.Set(x, y, Instantiate(riflemanPrefab, LocalPosToGlobal(x,y), Quaternion.identity));
                 }
             }
         }
     }
 
+    private Vector3 LocalPosToGlobal(Vector2Int pos) {
+
+        return new Vector3(pos.x * mapScale.x + TILES_OFFSET.x, 0, pos.y * mapScale.y + TILES_OFFSET.z);
+    }
+
+    private Vector3 LocalPosToGlobal(int x,int y)
+    {
+        return new Vector3(x * mapScale.x + TILES_OFFSET.x, 0, y * mapScale.y + TILES_OFFSET.z);
+    }
+
     internal void SetWorldState(Building[,] buildingsMap, Unit[,] unitsMap)
     {
         throw new NotImplementedException();
+    }
+
+    public void RunAction(IAction action)
+    {
+        action.Run(map, LocalPosToGlobal);
     }
 
     public Vector2 GetMapScale()
@@ -161,4 +174,12 @@ public class Render : MonoBehaviour
     }
 
     #endregion
+
+    public struct Map {
+
+        public Map<GameObject> terrainMap;
+        public Map<GameObject> buildingsMap;
+        public Map<GameObject> unitsMap;
+
+    }
 }

@@ -29,6 +29,16 @@ public class Map<T>
         return map[x, y];
     }
 
+    public void Move(Vector2Int from, Vector2Int to)
+    {
+        if(map[to.x, to.y] != null)
+            throw new System.Exception($"Cannot move to a non-empty tile! From: {from.ToString()}. To: {to.ToString()}. Class name: {map[from.x, from.y].GetType().Name}");
+
+        T temp = map[from.x, from.y];
+        map[from.x, from.y] = map[to.x, to.y];
+        map[to.x, to.y] = temp;
+    }
+
     public Vector2Int GetSize()
     {
         return new Vector2Int(map.GetLength(0), map.GetLength(1));

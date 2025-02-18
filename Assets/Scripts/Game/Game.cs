@@ -70,15 +70,27 @@ public class Game
 
     public void SpawnUnit(Unit unit)
     {
+        if (!isValidUnitSpawn(unit))
+            return;
+
         unitsMap.Set(unit.GetPosition(), unit);
     }
 
-    private void isValidUnitSpawn(Unit unit)
+    public void MoveUnit(Vector2Int unitPos, Vector2Int newPos)
     {
-        if (unitsMap.Get(unit.GetPosition()) != null || buildingsMap.Get(unit.GetPosition()) != null)
-        {
-            // Add your logic here
-        }
+        Unit unit = unitsMap.Get(unitPos);
+
+        if (unit == null)
+            throw new Exception($"Cannot move a unit from an empty tile! From: {unitPos.ToString()}. To: {newPos.ToString()}");
+
+        if(!unit.isCanMoveInTurn)
+            throw new Exception($"Cannot move a unit in the same turn! From: {unitPos.ToString()}. To: {newPos.ToString()}");
+
+        if (!MathUtils.IsListContainsVec2Int(GetUnitPossibleMovePoints(unitPos), newPos))
+            throw new Exception($"Cannot move a unit to a non-adjacent tile! From: {unitPos.ToString()}. To: {newPos.ToString()}");
+
+        unitsMap.Move(unitPos, newPos);
+        unit.OnMove();
     }
 
     #region Getters
@@ -131,8 +143,29 @@ public class Game
 
     #endregion
 
+    private bool isValidUnitSpawn(Unit unit)
+    {
+        if (!isPosValid(unit.GetPosition()))
+            return false;
+
+        int cityCount = unit.Owner.GetCitiesCount();
+        for (int i = 0; i < cityCount; i++)
+        {
+            Vector2Int cityPos = unit.Owner.GetCity(i).GetPosition();
+            if (MathUtils.IsPosInRange(unit.GetPosition(), cityPos - new Vector2Int(1, 1), cityPos + new Vector2Int(1, 1)))
+                return true;
+        }
+        return false;
+    }
+
     private bool isPosValid(Vector2Int pos) {
-        return !(pos.x < 0 || pos.x >= unitsMap.GetSize().x || pos.y < 0 || pos.y >= unitsMap.GetSize().y);
+
+        return MathUtils.IsPosInRange(pos,Vector2Int.zero, terrainMap.GetSize() - new Vector2Int(1,1));
+    }
+
+    public bool IsUnitActive(Vector2Int pos)
+    {
+        return unitsMap.Get(pos).isCanMoveInTurn;
     }
 
     public enum TerrainType
