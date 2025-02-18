@@ -55,6 +55,18 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void NextTurn() {
+
+        render.OnNextTurn();
+        game.NextTurn();
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            NextTurn();
+    }
+
     private void AddAndRunAction(IAction action) {
 
         actions.Add(action);

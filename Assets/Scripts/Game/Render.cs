@@ -120,6 +120,21 @@ public class Render : MonoBehaviour
         return mapScale;
     }
 
+    public void OnNextTurn()
+    {
+        for(int x = 0; x < map.unitsMap.GetSize(0); x++)
+        {
+            for (int y = 0; y < map.unitsMap.GetSize(1); y++)
+            {
+                if (map.unitsMap.Get(x, y) != null)
+                {
+                    GameObject unit = map.unitsMap.Get(x, y);
+                    unit.transform.localScale = new Vector3(1, 1, 1);
+                }
+            }
+        }
+    }
+
     #region Selection_And_Movement
 
     public void ClearSelection()

@@ -30,6 +30,11 @@ public class PlayerController
         this.spawnUnit_del = spawnUnit_del;
     }
 
+    public Player GetCurrentPlayer()
+    {
+        return players[currTurn];
+    }
+
     /// <summary>
     /// Distributes villages among players one by one
     /// </summary>
@@ -65,6 +70,16 @@ public class PlayerController
             spawnUnit_del?.Invoke(new Rifleman(pos, player));
         }
 
+    }
+
+    public void NextTurn()
+    {
+        currTurn++;
+
+        GetCurrentPlayer().ActivateUnits();
+
+        if (currTurn >= players.Count)
+            currTurn = 0;
     }
 
     public int PlayersCount { get; }

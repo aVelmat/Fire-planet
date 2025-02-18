@@ -73,6 +73,7 @@ public class Game
         if (!isValidUnitSpawn(unit))
             return;
 
+        unit.Owner.AddUnit(unit);
         unitsMap.Set(unit.GetPosition(), unit);
     }
 
@@ -93,6 +94,11 @@ public class Game
         unit.OnMove();
     }
 
+    public void NextTurn()
+    {
+        PC.NextTurn();
+    }
+
     #region Getters
 
     internal Map<Building> GetBuildings()
@@ -111,6 +117,12 @@ public class Game
     }
     internal List<Vector2Int> GetUnitPossibleMovePoints(Vector2Int pos)
     {
+        if (
+            !IsUnitActive(pos) || 
+            PC.GetCurrentPlayer() != unitsMap.Get(pos).Owner
+        )
+            return null;
+
         List <Vector2Int> possibleMoves = new List<Vector2Int>();
         for (int x = -1;x <= 1;x++)
             for(int y = -1;y <= 1; y++)

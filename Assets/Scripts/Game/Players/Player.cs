@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player
 {
     private List<City> cities = new List<City>();
+    private List<Unit> units = new List<Unit>();
 
     public TeamColor Team { get; private set; }
 
@@ -15,11 +16,21 @@ public class Player
     }
 
     public City GetCity(int num) { return cities[num]; }
+    public Unit GetUnit(int num) { return units[num]; }
     public void AddCity(City city) { cities.Add(city); }
+    public void AddUnit(Unit unit) { units.Add(unit); }
 
-    internal int GetCitiesCount()
+    public int GetCitiesCount()
     {
         return cities.Count;
+    }
+
+    public void ActivateUnits()
+    {
+        foreach (var unit in units)
+        {
+            unit.isCanMoveInTurn = true;
+        }
     }
 
     public enum TeamColor
