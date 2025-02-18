@@ -24,9 +24,8 @@ public class SelectionTool
     public void SelectUnit(Vector2Int pos,List<Vector2Int> movePoints, float selectSpriteYoffset) {
 
         render.ClearSelection();
-        render.ClearUnitMovePos();
         render.ShowUnitSelection(pos, selectSpriteYoffset);
-        render.CreateUnitMovePoints();
+        render.CreateUnitMovePoints(movePoints, selectSpriteYoffset);
         selectionType = SelectionType.Unit;
         this.selectedTilePosition = pos;
     }

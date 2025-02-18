@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
 
     public void OnTileClicked(Vector2Int pos)
     {
+
         if (SelTool.selectionType == SelectionTool.SelectionType.Unit && pos == SelTool.selectedTilePosition)
         {
             List<Vector2Int> possibleMovePoints = game.GetUnitPossibleMovePoints(pos);
@@ -48,7 +49,7 @@ public class GameController : MonoBehaviour
                 if (SelTool.selectionType == SelectionTool.SelectionType.Tile && SelTool.selectedTilePosition == pos)
                     SelTool.ClearSelection();
                 else
-                    SelectUnit(pos);
+                    SelectUnit(pos, game.GetUnitPossibleMovePoints(pos));
             }
             else
             {
@@ -72,11 +73,11 @@ public class GameController : MonoBehaviour
         SelTool.SelectTile(pos, yOffset);
     }
 
-    private void SelectUnit(Vector2Int pos)
+    private void SelectUnit(Vector2Int pos,List<Vector2Int> movePoints)
     {
         float yOffset = 0;
         if (game.GetTerrainElem(pos) == Game.TerrainType.mountain)
             yOffset = 0.12f;
-        SelTool.SelectUnit(pos, yOffset);
+        SelTool.SelectUnit(pos, movePoints, yOffset);
     }
 }

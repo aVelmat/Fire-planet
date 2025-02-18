@@ -12,9 +12,10 @@ public class Render : MonoBehaviour
     public GameObject villagePrefab;
     public GameObject cityPrefab;
     public GameObject riflemanPrefab;
-    [Header("Selection Sprites")]
+    [Header("Dynamic GUI Sprites")]
     public GameObject selectUnitSprite;
     public GameObject selectTileSprite;
+    public GameObject unitMovePointSprite;
 
     [SerializeField]
     private Vector2 mapScale;
@@ -24,6 +25,8 @@ public class Render : MonoBehaviour
     private Map<GameObject> terrainMap;
     private Map<GameObject> buildingsMap;
     private Map<GameObject> unitsMap;
+
+    private List<GameObject> unitMovePoints = new List<GameObject>();
 
     public void InitWorld(Map<Game.TerrainType> terrainMap, Map<Building>  buildings, Map<Unit> units)
     {
@@ -104,12 +107,21 @@ public class Render : MonoBehaviour
         return mapScale;
     }
 
-    #region Selection
+    #region Selection_And_Movement
 
     public void ClearSelection()
     {
+        ClearUnitMovePos();
         selectUnitSprite.SetActive(false);
         selectTileSprite.SetActive(false);
+    }
+
+    private void ClearUnitMovePos()
+    {
+        foreach (GameObject movePoint in unitMovePoints)
+        {
+            Destroy(movePoint);
+        }
     }
 
     public void ShowUnitSelection(Vector2Int vector2Int, float selectSpriteYoffset)
@@ -121,7 +133,31 @@ public class Render : MonoBehaviour
     public void ShowTileSelection(Vector2Int vector2Int, float selectSpriteYoffset)
     {
         selectTileSprite.SetActive(true);
-        selectTileSprite.transform.position = new Vector3(vector2Int.x * mapScale.x + TILES_OFFSET.x, selectSpriteYoffset + 0.505f, vector2Int.y * mapScale.y + TILES_OFFSET.z);
+        selectTileSprite.transform.position = new Vector3(
+            vector2Int.x * mapScale.x + TILES_OFFSET.x, 
+            selectSpriteYoffset + 0.505f, 
+            vector2Int.y * mapScale.y + TILES_OFFSET.z
+        );
+    }
+
+    public void CreateUnitMovePoints(List<Vector2Int> movePoints,float moveSpriteYOffset)
+    {
+        ClearUnitMovePos();
+
+        if (movePoints == null)
+            return;
+
+        foreach (Vector2Int movePoint in movePoints)
+        {
+            GameObject movePointObj = Instantiate(
+                unitMovePointSprite, 
+                new Vector3(
+                    movePoint.x * mapScale.x + TILES_OFFSET.x,
+                    moveSpriteYOffset + 0.505f, 
+                    movePoint.y * mapScale.y + TILES_OFFSET.z), 
+                Quaternion.identity);
+            unitMovePoints.Add(movePointObj);
+        }
     }
 
     #endregion

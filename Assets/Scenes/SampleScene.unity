@@ -491,6 +491,7 @@ MonoBehaviour:
   riflemanPrefab: {fileID: 1179412273995719900, guid: e4ecf92f85de2244ba075fd3692caf7c, type: 3}
   selectUnitSprite: {fileID: 1788678674}
   selectTileSprite: {fileID: 1671373478}
+  unitMovePointSprite: {fileID: 2473749599824123783, guid: b84e3a6ed64001e4fb5c7affaf74415f, type: 3}
   mapScale: {x: 1, y: 1}
 --- !u!114 &1067033143
 MonoBehaviour:
@@ -625,7 +626,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1907871420849680315, guid: 9a5d5a61140d0e04a83a877f39a035e9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1000
       objectReference: {fileID: 0}
     - target: {fileID: 1907871420849680315, guid: 9a5d5a61140d0e04a83a877f39a035e9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -702,7 +703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6941853331006615505, guid: 3f3a4bbf9d286d64dba502a92afef0ff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1000
       objectReference: {fileID: 0}
     - target: {fileID: 6941853331006615505, guid: 3f3a4bbf9d286d64dba502a92afef0ff, type: 3}
       propertyPath: m_LocalPosition.y

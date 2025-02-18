@@ -99,7 +99,24 @@ public class Game
     }
     internal List<Vector2Int> GetUnitPossibleMovePoints(Vector2Int pos)
     {
-        return null;
+        List <Vector2Int> possibleMoves = new List<Vector2Int>();
+        for (int x = -1;x <= 1;x++)
+            for(int y = -1;y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+
+                Vector2Int newPos = pos + new Vector2Int(x, y);
+
+                if (!isPosValid(newPos))
+                    continue;
+
+                if (unitsMap.Get(newPos) != null)
+                    continue;
+
+                possibleMoves.Add(newPos);
+            }
+        return possibleMoves;
     }
 
     internal Unit GetUnit(Vector2Int pos)
@@ -113,6 +130,10 @@ public class Game
     }
 
     #endregion
+
+    private bool isPosValid(Vector2Int pos) {
+        return !(pos.x < 0 || pos.x >= unitsMap.GetSize().x || pos.y < 0 || pos.y >= unitsMap.GetSize().y);
+    }
 
     public enum TerrainType
     {
