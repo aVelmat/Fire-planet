@@ -1,5 +1,6 @@
 ﻿
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,58 +9,113 @@ using UnityEngine;
 /// </summary>
 public class SelectionTool
 {
+    public delegate bool IsUnitExsist(Vector2Int pos,out List<Vector2Int> movePoints);
+    public delegate float GetSelectSpriteYoffset(Vector2Int pos);
+
     public SelectionType selectionType { get; private set; } = SelectionType.None;
     public Vector2Int selectedTilePosition { get; private set; }
+    /// <summary>
+    /// 0 - unit selection, 1 - tile selection, 2 - no selection
+    /// </summary>
+    public int selectLevel { get; private set; } = 2;
     private Render render;
 
-    public SelectionTool(Render render)
+    private IsUnitExsist isUnitExsist_del;
+    private GetSelectSpriteYoffset getSelectSpriteYoffset_del;
+
+    public SelectionTool(Render render,IsUnitExsist isUnitExsist_del, GetSelectSpriteYoffset getSelectSpriteYoffset_del)
     {
+        this.isUnitExsist_del = isUnitExsist_del;
+        this.getSelectSpriteYoffset_del = getSelectSpriteYoffset_del;
         this.render = render;
+    }
+
+    public void IncreaseSelectLevel()
+    {
+        selectLevel++;
+
+        switch (selectLevel)
+        {
+            case 0:
+                TrySelectUnit();
+                break;
+            case 1:
+                TrySelectTile();
+                break;
+            case 2:
+                ClearSelection();
+                break;
+            default:
+                TrySelectUnit();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Selects proper object based on the current selection level.
+    /// </summary>
+    /// <param name="pos"></param>
+    public void Select(Vector2Int pos)
+    {
+        selectedTilePosition = pos;
+
+        TrySelectUnit();
+    }
+
+    public void ClearSelection()
+    {
+        selectLevel = 2;
+
+        render.ClearSelection();
+        selectionType = SelectionType.None;
+        selectedTilePosition = new Vector2Int(-1, -1);
+    }
+
+    private void TrySelectTile()
+    {
+        selectLevel = 1;
+
+        SelectTile(getSelectSpriteYoffset_del(selectedTilePosition));
+    }
+
+    private void TrySelectUnit()
+    {
+        selectLevel = 0;
+        List<Vector2Int> movePoints = new List<Vector2Int>();
+        
+        if (!isUnitExsist_del(selectedTilePosition,out movePoints))
+        {
+            IncreaseSelectLevel();
+            return;
+        }
+
+        SelectUnit(movePoints, getSelectSpriteYoffset_del(selectedTilePosition));
     }
 
     /// <summary>
     /// Selects a tile with unit and renders the selection.
     /// </summary>
     /// <param name="unit"></param>
-    public void SelectUnit(Vector2Int pos,List<Vector2Int> movePoints, float selectSpriteYoffset) {
+    private void SelectUnit(List<Vector2Int> movePoints, float selectSpriteYoffset) {
 
         render.ClearSelection();
-        render.ShowUnitSelection(pos, selectSpriteYoffset);
+        render.ShowUnitSelection(selectedTilePosition, selectSpriteYoffset);
         render.CreateUnitMovePoints(movePoints, selectSpriteYoffset);
         selectionType = SelectionType.Unit;
-        this.selectedTilePosition = pos;
-    }
-
-    /// <summary>
-    /// Selects a tile with building and renders the selection.
-    /// </summary>
-    /// <param name="unit"></param>
-    public void SelectBuilding(Vector2Int pos, float selectSpriteYoffset)
-    {
-        render.ClearSelection();
-        render.ShowTileSelection(pos, selectSpriteYoffset);
-        selectionType = SelectionType.Tile;
-        this.selectedTilePosition = pos;
     }
 
     /// <summary>
     /// Selects a terrain tile and renders the selection.
     /// </summary>
     /// <param name="unit"></param>
-    public void SelectTile(Vector2Int pos,float selectSpriteYoffset)
+    private void SelectTile(float selectSpriteYoffset)
     {
         render.ClearSelection();
-        render.ShowTileSelection(pos, selectSpriteYoffset);
+        render.ShowTileSelection(selectedTilePosition, selectSpriteYoffset);
         selectionType = SelectionType.Tile;
-        this.selectedTilePosition = pos;
     }
 
-    public void ClearSelection()
-    {
-        render.ClearSelection();
-        selectionType = SelectionType.None;
-        selectedTilePosition = new Vector2Int(-1, -1);
-    }
+  
 
 
     public enum SelectionType

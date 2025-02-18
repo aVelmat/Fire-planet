@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     {
         game = new Game(mapSize,2,1);
         render = GetComponent<Render>();
-        SelTool = new SelectionTool(render);
+        SelTool = new SelectionTool(render, IsUnitExsist, GetSelectSpriteYoffset);
 
         render.InitWorld(game.GetTerrain(), game.GetBuildings(), game.GetUnits());
 
@@ -29,55 +29,48 @@ public class GameController : MonoBehaviour
 
     public void OnTileClicked(Vector2Int pos)
     {
-
-        if (SelTool.selectionType == SelectionTool.SelectionType.Unit && pos == SelTool.selectedTilePosition)
+        if (pos != SelTool.selectedTilePosition)
         {
-            List<Vector2Int> possibleMovePoints = game.GetUnitPossibleMovePoints(pos);
-            if (possibleMovePoints != null && MathUtils.IsListContainsVec2Int(possibleMovePoints, pos))
-            {
-                //Move unit
+            if(SelTool.selectionType == SelectionTool.SelectionType.Unit) { 
+
+                List<Vector2Int> movePoints = game.GetUnitPossibleMovePoints(SelTool.selectedTilePosition);
+                if(movePoints != null && MathUtils.IsListContainsVec2Int(movePoints, pos))
+                {
+                    // Unit move
+
+                    SelTool.ClearSelection();
+                }
+                else
+                {
+                    SelTool.Select(pos);
+                }
             }
             else
-            {
-                SelectTile(pos);
-            }
+                SelTool.Select(pos);
         }
         else
         {
-            if (game.GetUnit(pos) != null)
-            {
-                if (SelTool.selectionType == SelectionTool.SelectionType.Tile && SelTool.selectedTilePosition == pos)
-                    SelTool.ClearSelection();
-                else
-                    SelectUnit(pos, game.GetUnitPossibleMovePoints(pos));
-            }
-            else
-            {
-                if (SelTool.selectedTilePosition != pos)
-                {
-                    SelectTile(pos);
-                }
-                else
-                {
-                    SelTool.ClearSelection();
-                }
-            }
+            SelTool.IncreaseSelectLevel();
         }
     }
 
-    private void SelectTile(Vector2Int pos)
-    {
-        float yOffset = 0;
-        if (game.GetTerrainElem(pos) == Game.TerrainType.mountain)
-            yOffset = 0.12f;
-        SelTool.SelectTile(pos, yOffset);
+    private bool IsUnitExsist(Vector2Int pos,out List<Vector2Int> movePoints) {
+
+        movePoints = null;
+
+        if (game.GetUnit(pos) != null)
+        {
+            movePoints = game.GetUnitPossibleMovePoints(pos);
+
+            return true;
+        }
+        return false;
     }
 
-    private void SelectUnit(Vector2Int pos,List<Vector2Int> movePoints)
+    private float GetSelectSpriteYoffset(Vector2Int pos)
     {
-        float yOffset = 0;
         if (game.GetTerrainElem(pos) == Game.TerrainType.mountain)
-            yOffset = 0.12f;
-        SelTool.SelectUnit(pos, movePoints, yOffset);
+            return 0.12f;
+        return 0;
     }
 }
