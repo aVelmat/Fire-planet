@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Game\Actions\MoveUnit.cs" />
     <Compile Include="Assets\Scripts\Game\WorldGen.cs" />
     <Compile Include="Assets\Scripts\Game\Render.cs" />
+    <Compile Include="Assets\Scripts\Game\Actions\Action.cs" />
     <Compile Include="Assets\Scripts\Game\Unit\Rifleman.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Game\Building\Building.cs" />
@@ -79,7 +80,6 @@
     <Compile Include="Assets\Scripts\Game\Players\Player.cs" />
     <Compile Include="Assets\Scripts\Game\GameObjectBase.cs" />
     <Compile Include="Assets\Scripts\Game\Players\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\Game\Actions\IAction.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Game\Game.cs" />
   </ItemGroup>

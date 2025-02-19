@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     private Game game;
     private SelectionTool SelTool;
 
-    private List<IAction> actions = new List<IAction>();
+    private List<Action> actions = new List<Action>();
     public void Start()
     {
         game = new Game(mapSize,2,1);
@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
                 {
                     // Unit move
                     game.MoveUnit(SelTool.selectedTilePosition, pos);
-                    AddAndRunAction(new MoveUnit(SelTool.selectedTilePosition, pos,true));
+                    AddAndRunAction(new MoveUnit(SelTool.selectedTilePosition, pos,true,render));
 
                     SelTool.ClearSelection();
                     return;
@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour
             NextTurn();
     }
 
-    private void AddAndRunAction(IAction action) {
+    private void AddAndRunAction(Action action) {
 
         actions.Add(action);
         render.RunAction(action);
