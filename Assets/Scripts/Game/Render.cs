@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TerrainUtils;
+using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
 
 public class Render : MonoBehaviour
@@ -19,6 +20,11 @@ public class Render : MonoBehaviour
     public GameObject selectUnitSprite;
     public GameObject selectTileSprite;
     public GameObject unitMovePointSprite;
+
+    /// <summary>
+    /// Player index -> color material
+    /// </summary>
+    public Material[] playerColorMaterials;
 
     public GetSpriteYoffset getSpriteYoffset { get; private set; }
 
@@ -77,15 +83,11 @@ public class Render : MonoBehaviour
             for (int y = 0; y < buildingsMap.GetSize(1); y++)
             {
                 Building building = buildingsMap.Get(x,y);
-                if (building is Village)
-                {
-                    map.buildingsMap.Set(x, y, Instantiate(villagePrefab, LocalPosToGlobal(x, y), Quaternion.identity));
-                }
 
-                if (building is City)
-                {
-                    map.buildingsMap.Set(x, y, Instantiate(cityPrefab, LocalPosToGlobal(x, y), Quaternion.identity));
-                }
+                if (building == null)
+                    continue;
+
+                CreateBuilding(building);
             }
         }
     }
@@ -98,15 +100,46 @@ public class Render : MonoBehaviour
             for (int y = 0; y < units.GetSize(1); y++)
             {
                 Unit unit = units.Get(x, y);
-                if (unit is Rifleman)
-                {
-                    map.unitsMap.Set(x, y, Instantiate(riflemanPrefab, LocalPosToGlobal(x,y), Quaternion.identity));
-                }
+
+                if (unit == null)
+                    continue;
+
+                CreateUnit(unit);
             }
         }
     }
 
     #endregion
+
+    public void CreateBuilding(Building building) {
+
+        if (building is Village)
+        {
+            map.buildingsMap.Set(building.GetPosition(), Instantiate(villagePrefab, LocalPosToGlobal(building.GetPosition()), Quaternion.identity));
+        }
+
+        if (building is City)
+        {
+            City city = (City)building;
+            GameObject cityObj = Instantiate(cityPrefab, LocalPosToGlobal(city.GetPosition()), Quaternion.identity);
+            map.buildingsMap.Set(city.GetPosition(), cityObj);
+            cityObj.GetComponent<CityObject>().SetMaterial(playerColorMaterials[(int)city.Owner.Team]);
+        }
+
+    }
+    public void CreateUnit(Unit unit)
+    {
+        GameObject unitObj = null;
+
+        if (unit is Rifleman)
+        {
+            Vector2Int pos = unit.GetPosition();
+            unitObj = Instantiate(riflemanPrefab, LocalPosToGlobal(pos), Quaternion.identity);
+            map.unitsMap.Set(pos, unitObj);
+        }
+
+        unitObj.GetComponent<UnitObject>().SetMaterial(playerColorMaterials[(int)unit.Owner.Team]);
+    }
 
     public Vector3 LocalPosToGlobal(Vector2Int pos) {
 

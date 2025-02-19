@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
     private List<Action> actions = new List<Action>();
     public void Start()
     {
-        game = new Game(mapSize,2,1);
+        game = new Game(mapSize,3,1);
         render = GetComponent<Render>();
         SelTool = new SelectionTool(render, IsUnitExsist);
 

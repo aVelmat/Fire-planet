@@ -492,6 +492,11 @@ MonoBehaviour:
   selectUnitSprite: {fileID: 1788678674}
   selectTileSprite: {fileID: 1671373478}
   unitMovePointSprite: {fileID: 2473749599824123783, guid: b84e3a6ed64001e4fb5c7affaf74415f, type: 3}
+  playerColorMaterials:
+  - {fileID: 2100000, guid: 4c258fb6ae15f194881ba82448638659, type: 2}
+  - {fileID: 2100000, guid: 269d08cc93a0ad5468ceae4a3f58459e, type: 2}
+  - {fileID: 2100000, guid: aad1499732bbc804fac19b566ca81cb6, type: 2}
+  - {fileID: 2100000, guid: 40d4ec122dbdc274f9f61e7f672b454f, type: 2}
   mapScale: {x: 1, y: 1}
 --- !u!114 &1067033143
 MonoBehaviour:
