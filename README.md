@@ -6,7 +6,8 @@
 
 # Fire planet (ENG)
 
-This repository is a strategy game project designed for both game play and AI creation developed on the Unity engine. This project was inspired by the game “the battle of polytopia”
+This repository is a strategy game project designed for both game play and AI creation developed on the Unity engine. This project was inspired by the game “the battle of polytopia”.
+The game is currently in development.
 
 ## Description
 
@@ -31,6 +32,7 @@ Here we will look at the main concepts of the game (the game may become more com
 # Fire planet (RU)
 
 Этот репозиторий — проект стратегической игры, разработанный на движке Unity, предназначенный как для игрового процесса, так и для создания ИИ. Этот проект был вдохновлен игрой "The Battle of Polytopia".
+В данный момент игра находится в разработке.
 
 ## Описание
 
