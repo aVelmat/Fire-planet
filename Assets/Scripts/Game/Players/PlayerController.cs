@@ -76,10 +76,10 @@ public class PlayerController
     {
         currTurn++;
 
-        GetCurrentPlayer().ActivateUnits();
-
         if (currTurn >= players.Count)
             currTurn = 0;
+
+        GetCurrentPlayer().ActivateUnits();
     }
 
     public int PlayersCount { get; }

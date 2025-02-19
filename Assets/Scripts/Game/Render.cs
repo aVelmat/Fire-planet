@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TerrainUtils;
+using static UnityEditor.PlayerSettings;
 
 public class Render : MonoBehaviour
 {
+    public delegate float GetSpriteYoffset(Vector2Int pos);
+
     [Header("Prefabs")]
     public GameObject groundPrefab;
     public GameObject mountainPrefab;
@@ -26,12 +29,20 @@ public class Render : MonoBehaviour
 
     private List<GameObject> unitMovePoints = new List<GameObject>();
 
+    private GetSpriteYoffset getSpriteYoffset_del;
+
     public void InitWorld(Map<Game.TerrainType> terrainMap, Map<Building>  buildings, Map<Unit> units)
     {
         BuildTerrain(terrainMap);
         BuildBuildings(buildings);
         BuildUnits(units);
     }
+
+    public void SetDelegates(GetSpriteYoffset getSpriteYoffset_del) {
+        this.getSpriteYoffset_del = getSpriteYoffset_del;
+    }
+
+    #region Build_World
 
     private void BuildTerrain(Map<Game.TerrainType> terrainMap)
     {
@@ -95,6 +106,8 @@ public class Render : MonoBehaviour
         }
     }
 
+    #endregion
+
     private Vector3 LocalPosToGlobal(Vector2Int pos) {
 
         return new Vector3(pos.x * mapScale.x + TILES_OFFSET.x, 0, pos.y * mapScale.y + TILES_OFFSET.z);
@@ -152,23 +165,23 @@ public class Render : MonoBehaviour
         }
     }
 
-    public void ShowUnitSelection(Vector2Int vector2Int, float selectSpriteYoffset)
+    public void ShowUnitSelection(Vector2Int pos)
     {
         selectUnitSprite.SetActive(true);
-        selectUnitSprite.transform.position = new Vector3(vector2Int.x * mapScale.x + TILES_OFFSET.x, selectSpriteYoffset + 0.505f, vector2Int.y * mapScale.y + TILES_OFFSET.z);
+        selectUnitSprite.transform.position = new Vector3(pos.x * mapScale.x + TILES_OFFSET.x, getSpriteYoffset_del(pos) + 0.505f, pos.y * mapScale.y + TILES_OFFSET.z);
     }
 
-    public void ShowTileSelection(Vector2Int vector2Int, float selectSpriteYoffset)
+    public void ShowTileSelection(Vector2Int pos)
     {
         selectTileSprite.SetActive(true);
         selectTileSprite.transform.position = new Vector3(
-            vector2Int.x * mapScale.x + TILES_OFFSET.x, 
-            selectSpriteYoffset + 0.505f, 
-            vector2Int.y * mapScale.y + TILES_OFFSET.z
+            pos.x * mapScale.x + TILES_OFFSET.x,
+            getSpriteYoffset_del(pos) + 0.505f, 
+            pos.y * mapScale.y + TILES_OFFSET.z
         );
     }
 
-    public void CreateUnitMovePoints(List<Vector2Int> movePoints,float moveSpriteYOffset)
+    public void CreateUnitMovePoints(List<Vector2Int> movePoints)
     {
         ClearUnitMovePos();
 
@@ -181,7 +194,7 @@ public class Render : MonoBehaviour
                 unitMovePointSprite, 
                 new Vector3(
                     movePoint.x * mapScale.x + TILES_OFFSET.x,
-                    moveSpriteYOffset + 0.505f, 
+                    getSpriteYoffset_del(movePoint) + 0.505f, 
                     movePoint.y * mapScale.y + TILES_OFFSET.z), 
                 Quaternion.identity);
             unitMovePoints.Add(movePointObj);

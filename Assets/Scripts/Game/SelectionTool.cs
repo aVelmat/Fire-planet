@@ -10,7 +10,6 @@ using UnityEngine;
 public class SelectionTool
 {
     public delegate bool IsUnitExsist(Vector2Int pos,out List<Vector2Int> movePoints);
-    public delegate float GetSelectSpriteYoffset(Vector2Int pos);
 
     public SelectionType selectionType { get; private set; } = SelectionType.None;
     public Vector2Int selectedTilePosition { get; private set; }
@@ -21,12 +20,10 @@ public class SelectionTool
     private Render render;
 
     private IsUnitExsist isUnitExsist_del;
-    private GetSelectSpriteYoffset getSelectSpriteYoffset_del;
 
-    public SelectionTool(Render render,IsUnitExsist isUnitExsist_del, GetSelectSpriteYoffset getSelectSpriteYoffset_del)
+    public SelectionTool(Render render,IsUnitExsist isUnitExsist_del)
     {
         this.isUnitExsist_del = isUnitExsist_del;
-        this.getSelectSpriteYoffset_del = getSelectSpriteYoffset_del;
         this.render = render;
     }
 
@@ -75,7 +72,7 @@ public class SelectionTool
     {
         selectLevel = 1;
 
-        SelectTile(getSelectSpriteYoffset_del(selectedTilePosition));
+        SelectTile();
     }
 
     private void TrySelectUnit()
@@ -89,18 +86,18 @@ public class SelectionTool
             return;
         }
 
-        SelectUnit(movePoints, getSelectSpriteYoffset_del(selectedTilePosition));
+        SelectUnit(movePoints);
     }
 
     /// <summary>
     /// Selects a tile with unit and renders the selection.
     /// </summary>
     /// <param name="unit"></param>
-    private void SelectUnit(List<Vector2Int> movePoints, float selectSpriteYoffset) {
+    private void SelectUnit(List<Vector2Int> movePoints) {
 
         render.ClearSelection();
-        render.ShowUnitSelection(selectedTilePosition, selectSpriteYoffset);
-        render.CreateUnitMovePoints(movePoints, selectSpriteYoffset);
+        render.ShowUnitSelection(selectedTilePosition);
+        render.CreateUnitMovePoints(movePoints);
         selectionType = SelectionType.Unit;
     }
 
@@ -108,15 +105,12 @@ public class SelectionTool
     /// Selects a terrain tile and renders the selection.
     /// </summary>
     /// <param name="unit"></param>
-    private void SelectTile(float selectSpriteYoffset)
+    private void SelectTile()
     {
         render.ClearSelection();
-        render.ShowTileSelection(selectedTilePosition, selectSpriteYoffset);
+        render.ShowTileSelection(selectedTilePosition);
         selectionType = SelectionType.Tile;
     }
-
-  
-
 
     public enum SelectionType
     {

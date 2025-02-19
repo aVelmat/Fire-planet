@@ -5,6 +5,11 @@ using UnityEngine.TerrainUtils;
 
 public class GameController : MonoBehaviour
 {
+    /*
+     * Баги/недоработки:
+     * - При движении юнита на гору, он остается на том же уровне, что и на земле
+     */
+
     public CameraController CC;
 
     public Vector2Int mapSize;
@@ -18,9 +23,10 @@ public class GameController : MonoBehaviour
     {
         game = new Game(mapSize,2,1);
         render = GetComponent<Render>();
-        SelTool = new SelectionTool(render, IsUnitExsist, GetSelectSpriteYoffset);
+        SelTool = new SelectionTool(render, IsUnitExsist);
 
         render.InitWorld(game.GetTerrain(), game.GetBuildings(), game.GetUnits());
+        render.SetDelegates(GetSelectSpriteYoffset);
 
         Vector2 mapScale = render.GetMapScale();
         CC.SetMoveLimits(new Vector3(-5, 0, -5), new Vector3(mapSize.x * mapScale.x, GameConfig.CAMERA_MAX_Y, mapSize.y * mapScale.y));
