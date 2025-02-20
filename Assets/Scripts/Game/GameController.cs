@@ -5,9 +5,9 @@ using UnityEngine.TerrainUtils;
 
 public class GameController : MonoBehaviour
 {
-    /* 
-    * Баги/недоработки: 
-    * - При движении юнита на гору, он остается на том же уровне, что и на земле 
+    /*
+      * Баги/недоработки: 
+      * - При движении юнита на гору, он остается на том же уровне, что и на земле 
     */
 
     public CameraController CC;
